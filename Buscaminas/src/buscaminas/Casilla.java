@@ -7,6 +7,9 @@ public class Casilla {
     //VARIABLES
     private boolean tieneBomba;
     private boolean tapado = true;
+    private int numero = 0;
+    
+    
     
     public Casilla(){
     }
@@ -15,6 +18,10 @@ public class Casilla {
         this.tieneBomba = tieneBomba;
     }
 
+    public int getNumero(){
+        return numero;
+    }
+    
     public boolean isBomba(){
         return tieneBomba;
     }
