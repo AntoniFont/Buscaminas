@@ -11,18 +11,18 @@ public class Tablero {
 
     public Tablero() {
         posicionBombas = generarPosicionBombas();
-
-        for (int i = 0; i < NUM_FILAS * NUM_COLUMNAS; i++) {
-            if (seHaGeneradoBombaEnLaPos(i)) {
-                casillas[getFila(i)][getColumna(i)] = new Casilla(true);
+        for(int p = 0; p < NUM_FILAS * NUM_COLUMNAS; p++) {
+            if (seHaGeneradoBombaEnLaPos(p)) {
+                //Generamos casilla sin bomba
+                casillas[getFila(p)][getColumna(p)] = new Casilla(true);
             } else {
-                casillas[getFila(i)][getColumna(i)] = new Casilla(false);
+                //Generamos casilla sin bomba
+                casillas[getFila(p)][getColumna(p)] = new Casilla(false);
             }
-            //Generamos casilla sin bomba
-
         }
     }
 
+    
     private int getFila(int posicion) {
         return (int) (posicion / NUM_FILAS);
     }
