@@ -1,4 +1,9 @@
 package buscaminas;
+
+import java.util.Arrays;
+import java.util.Random;
+import utils.ArrayUtils;
+
 public class Tablero {
 
     //DATOS CONSTANTES
@@ -21,7 +26,6 @@ public class Tablero {
             }
         }
     }
-
     
     private int getFila(int posicion) {
         return (int) (posicion / NUM_FILAS);
@@ -35,19 +39,23 @@ public class Tablero {
     private int[] generarPosicionBombas() {
         //Hardcodeo cosas para hacer pruebas
         int posBomb[] = new int[NUM_BOMBAS];
-        posBomb[0] = 5;
-        posBomb[1] = 8;
-        posBomb[2] = 3;
-        posBomb[3] = 30;
-        posBomb[4] = 43;
-        posBomb[5] = 78;
-        posBomb[6] = 79;
-        posBomb[7] = 83;
-        posBomb[8] = 50;
-        posBomb[9] = 27;
 
+        Random r = new Random();
+        for(int i = 0; i < posBomb.length; i++){
+            boolean numRepetido;
+            int n;
+            //comprovam si el numero general aleatori esta repetit, si es aixi un numero nou
+            //fins que el numero que generi no estigui repetit, llavors el posam a l'array posRandom
+            do {
+                numRepetido = false;
+                n = r.nextInt(9*9-1); //genera numero random entre 0 y el total de casillas
+                if(ArrayUtils.arrayContieneEntero(posBomb,n)) {
+                        numRepetido = true;
+                }
+            }while(numRepetido);
+            posBomb[i] = n;
+        }
         return posBomb;
-        //return null;
     }
 
     private boolean seHaGeneradoBombaEnLaPos(int posicion) {
