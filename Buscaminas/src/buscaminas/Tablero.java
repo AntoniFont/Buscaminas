@@ -22,6 +22,7 @@ public class Tablero {
             //Generamos casilla sin bomba
 
         }
+        //Generar los numeros de las bombas
     }
 
     private int getFila(int posicion) {
@@ -31,7 +32,6 @@ public class Tablero {
     private int getColumna(int posicion) {
         return (posicion % NUM_COLUMNAS);
     }
-
     //Genera un array de 10 numeros no repetidos que van desde 0 hasta (NUM_FILAS*NUM_COLUMNAS-1)
     private int[] generarPosicionBombas() {
         //Hardcodeo cosas para hacer pruebas
@@ -90,7 +90,7 @@ public class Tablero {
     }
 
     //Hace lo mismo que toString pero muestra los que hay en los valores tapados
-    public String toStringTrampas() {
+    public String toStringDestapado() {
         //Los numeros de las columnas
         String tableroTexto = "  ";
         for (int j = 0; j < NUM_COLUMNAS; j++) {
@@ -105,7 +105,7 @@ public class Tablero {
                 if (casillas[i][j].isBomba()) {
                     tableroTexto += "x";
                 } else {
-                    tableroTexto += "-";
+                    tableroTexto += casillas[i][j].getNumero(); 
                 }
                 tableroTexto += " "; //Metemos un espacio para separar los valores
             }
@@ -113,5 +113,18 @@ public class Tablero {
         }
         return tableroTexto;
     }
+<<<<<<< Updated upstream
 
+=======
+    
+    public void destaparCasilla(int fila,int columna){
+        casillas[fila][columna].setTapado(false);
+        //si es una bomba
+            //Gameover = true
+            //destaparTodoElTablero (cambiar el metodo toStringTrampas)
+             
+    }
+    
+    
+>>>>>>> Stashed changes
 }
