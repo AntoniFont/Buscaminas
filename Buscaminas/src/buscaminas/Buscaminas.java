@@ -9,14 +9,18 @@ public class Buscaminas {
        tablero = new Tablero();
        while(!gameOver){
            System.out.println("Trampas: ");
-           System.out.println(tablero.toStringDestapado());
+           //System.out.println(tablero.toStringDestapado());
            System.out.println(tablero.toString());     
            int[] pos = pedirPosicion();
            tablero.destaparCasilla(pos[0], pos[1]);
        }
+       System.out.println(tablero.toStringDestapado());
+       System.out.println("GAME OVER!");
     }
     
-    
+    public static void setGameOver(boolean isGameOver){
+        gameOver = isGameOver;
+    }
     
     public static int[] pedirPosicion(){
         Scanner scanner = new Scanner(System.in);
