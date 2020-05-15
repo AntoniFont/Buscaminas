@@ -12,7 +12,7 @@ public class Tablero extends JPanel {
     private JPanel panelJuego;      //zona donde estan las casillas
     
     //DATOS CONSTANTES
-    private final int NUM_BOMBAS = 10;
+    private final int NUM_BOMBAS = 10 ;
     private final int NUM_FILAS = 9;
     private final int NUM_COLUMNAS = 9;
     //VARIABLES
