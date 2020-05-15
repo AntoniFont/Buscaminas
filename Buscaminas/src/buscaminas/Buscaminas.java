@@ -4,9 +4,10 @@ import java.util.Scanner;
 import javax.swing.JFrame;
 
 public class Buscaminas extends JFrame{
-       private static Tablero tablero;
-       private static BarraMenu barraMenu;
-       private static boolean gameOver = false;
+    //Lo encapsulamos de manera protected ya que otras clases (BarraMenu) del mismo paquete necesitan tener acceso 
+    protected static Tablero tablero; 
+    private static BarraMenu barraMenu;
+    private static boolean gameOver = false;
        
     public Buscaminas(){
         setSize(500, 500);

@@ -5,8 +5,16 @@
  */
 package buscaminas;
 
+import static buscaminas.Buscaminas.tablero;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -35,8 +43,13 @@ public class BarraMenu extends JMenuBar{
         jmItemGuardar.setText("Guardar");
         jmItemGuardar.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
-               
-                jmItemGuardarActionPerformed(evt);
+                try {
+                    jmItemGuardarActionPerformed(evt);
+                } catch (FileNotFoundException ex) {
+                    System.out.println("FileNotFound exception, error en ActionListener Boton Guardar");
+                } catch (IOException ex) {
+                    System.out.println("IOException , error en ActionListener Boton Guardar");
+                }
             }
         });
         //Nombre y accion sobre el boton del sub-menu Cargar
@@ -56,18 +69,36 @@ public class BarraMenu extends JMenuBar{
         this.add(jmenuArchivo);
     }
     
-    private void jmItemGuardarActionPerformed(ActionEvent evt){
+    private void jmItemGuardarActionPerformed(ActionEvent evt) throws FileNotFoundException, IOException{
         //instanciacion del selector de ficheros
         jselectficheroGuardar = new JFileChooser();
+        jselectficheroGuardar.setDialogTitle("Selecciona la carpeta donde quieres guardar el archivo de partida");
         
-        int nValor = jselectficheroGuardar.showSaveDialog(this);    //this componente padre del JFileChooser
-        if (nValor == JFileChooser.APPROVE_OPTION) {
-             System.out.println("Guardando...");
+        int valorSeleccionado = jselectficheroGuardar.showSaveDialog(this);    //this componente padre del JFileChooser
+        
+        if (valorSeleccionado == JFileChooser.APPROVE_OPTION) { //Si pulsa el boton guardar
+            System.out.println("Guardando...");
+            //Obtenemos la ruta donde se desea guardar
+            String ruta = jselectficheroGuardar.getCurrentDirectory().getAbsolutePath();
+            System.out.println("Ruta: " + ruta);
+            //Obtenemos el nombre que ha escrito
+            String nombreArchivo = jselectficheroGuardar.getSelectedFile().getName();
+            System.out.println("Nombre Archivo: " + nombreArchivo);
+            //Creamos una ruta del archivo absoluta
+            String rutaArchivo = ruta + "\\" + nombreArchivo;
+            System.out.println("rutaArchivo: " + rutaArchivo);
+            
+            FicheroPartidaOut fpo = new FicheroPartidaOut(rutaArchivo);
+            fpo.guardarPartida();
+            fpo.cerrarFichero();
+            
+            
+
+             
+             
+             
+             
         }
-        //Hacer un método aparte guardar() o hacer la funcion de guardar
-        //directamente aqui
-        
-        //guardarPartida(evt);
        
     }
     

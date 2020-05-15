@@ -1,5 +1,8 @@
 package buscaminas;
-public class Casilla {
+
+import java.io.Serializable;
+
+public class Casilla implements Serializable{
     
     
     //CONSTANTES
@@ -10,6 +13,8 @@ public class Casilla {
     private int numero = 0;
     private int posFila;
     private int posCol;
+    
+    public static final Casilla CENTINELA = new Casilla(-1,-1,false);
     
     
     public Casilla(){
@@ -49,4 +54,7 @@ public class Casilla {
         this.tapado = tapado;
     }
     
+    public boolean isCentinela(){
+        return (    getPosFila() == -1 && getPosCol() == -1 && !isBomba()   ); 
+    }
 }

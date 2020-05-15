@@ -41,6 +41,7 @@ public class Tablero extends JPanel {
         }
         //initComponents();
     }
+   
     
     //WIP INICIALIZAR LOS BOTONES Y LAS COSAS QUE HAYAN DENTRO DEL TABLERO DE JUEGO
     private void initComponents(){
@@ -211,6 +212,10 @@ public class Tablero extends JPanel {
         if(casillas[fila][columna].isBomba()){
             Buscaminas.setGameOver(true);
         }    
+    }
+    
+    public Casilla[][] getCasillas(){
+        return casillas;
     }
     
 }
