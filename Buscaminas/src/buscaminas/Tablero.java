@@ -8,8 +8,7 @@ import utils.ArrayUtils;
 public class Tablero extends JPanel {
 
     //Componentes graficos
-    private BarraMenu barraMenu;    //barra de menú 
-    private JPanel panelJuego;      //zona donde estan las casillas
+    //pOner aqui botones
     
     //DATOS CONSTANTES
     private final int NUM_BOMBAS = 10;
@@ -20,8 +19,8 @@ public class Tablero extends JPanel {
     private int posicionBombas[] = new int[NUM_BOMBAS];
 
     public Tablero(){
-        System.out.println("Visualizando tablero");
         posicionBombas = generarPosicionBombas();
+        //Iteramos por todas las posiciones
         for(int p = 0; p < NUM_FILAS * NUM_COLUMNAS; p++) {
             if (seHaGeneradoBombaEnLaPos(p)) {
                 //Generamos casilla sin bomba
@@ -35,42 +34,40 @@ public class Tablero extends JPanel {
         for(int i = 0; i<NUM_FILAS; i++){
             for(int j = 0; j<NUM_COLUMNAS; j++){
                 if(!casillas[i][j].isBomba()){  //generamos numero
-                    int n = contarBombasAlrededor(casillas[i][j]);
-                    casillas[i][j].setNumero(n);
+                    int numeroBombas = contarBombasAlrededor(casillas[i][j]);
+                    casillas[i][j].setNumero(numeroBombas);
                 }
             }
         }
-        //
-        initComponents();
+        //initComponents();
     }
     
-    //
+    //WIP INICIALIZAR LOS BOTONES Y LAS COSAS QUE HAYAN DENTRO DEL TABLERO DE JUEGO
     private void initComponents(){
-        barraMenu = new BarraMenu();
-        panelJuego = new JPanel();
+        
     }
     
     private int contarBombasAlrededor(Casilla casilla){
-        List<Casilla> casillasAlderedor = getCasillasAlderedor(casilla);
+        //List<Casilla> casillasAlderedor = getCasillasAlderedor(casilla);
+        Casilla casillasAlrededor[] = getCasillasAlrededor(casilla);
         int contBombas = 0;
         
-        for (Casilla c : casillasAlderedor) { 		      
-           if(c.isBomba()){
+        for (Casilla c : casillasAlrededor) { 		      
+           if(c != null && c.isBomba()){ //Si existe la casilla y tiene bomba
                contBombas++;
            }		
         }
-
-        System.out.println("Num de casillas adyacentes: " + casillasAlderedor.size());
         return contBombas;
     }
     
-    private List<Casilla> getCasillasAlderedor(Casilla casilla){
-        List<Casilla> casillasAlderedor = new ArrayList<>();
+    private Casilla[] getCasillasAlrededor(Casilla casilla){
+        //List<Casilla> casillasAlderedor = new ArrayList<>();
+        Casilla casillasAlrededor[] = new Casilla[8];
         
         //  c c c
         //  c x c   x: casilla seleccionada
         //  c c c
-        
+    
         //posiciones de las casillas a comprobar respecto a la casilla seleccionada
         int [][] posiciones = {     
             {-1,-1},    //nor-oeste
@@ -91,12 +88,18 @@ public class Tablero extends JPanel {
 
             //si la casilla adyacente actual esta en una posicion valida del tablero,
             //entonces se añade a la lista de casillas adyacentes validas
-            if(posicionCasillaValida(posFilaCasillaAdyacente,posColCasillaAdyacente)){
-                casillasAlderedor.add(casillas[posFilaCasillaAdyacente][posColCasillaAdyacente]);
+//            if(posicionCasillaValida(posFilaCasillaAdyacente,posColCasillaAdyacente)){
+//                casillasAlderedor.add(casillas[posFilaCasillaAdyacente][posColCasillaAdyacente]);
+//            }else{
+//                casillasAlrededor.add(null);
+//            }        
+            if (posicionCasillaValida(posFilaCasillaAdyacente,posColCasillaAdyacente)){
+                casillasAlrededor[i] = casillas[posFilaCasillaAdyacente][posColCasillaAdyacente];
+            }else{
+                casillasAlrededor[i] = null;
             }
-            
         }
-        return casillasAlderedor;
+        return casillasAlrededor;
     }
     
     // devuelve un booleano dependiendo de si la posicion del una casilla del tablero 

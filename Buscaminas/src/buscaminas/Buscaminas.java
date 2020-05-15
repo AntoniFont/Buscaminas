@@ -30,14 +30,11 @@ public class Buscaminas extends JFrame{
     public static void main(String[] args) {
        
         new Buscaminas().setVisible(true);     //comentar esta linea para quitar la ventana
-        
        //tablero = new Tablero();               //descomentar esta linea para quitar la ventana
        while(!gameOver){
-           System.out.println("Trampas: ");
-           //System.out.println(tablero.toStringDestapado());
            System.out.println(tablero.toString());     
            int[] pos = pedirPosicion();
-           tablero.destaparCasilla(pos[0], pos[1]);
+           tablero.destaparCasilla(pos[0],pos[1]); //Pos[0] es la posicion x y Pos[1] es la posicion y
        }
        System.out.println(tablero.toStringDestapado());
        System.out.println("GAME OVER!");
