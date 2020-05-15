@@ -1,22 +1,51 @@
 package buscaminas;
 
 import java.util.Scanner;
+import javax.swing.JFrame;
 
-public class Buscaminas {
+public class Buscaminas extends JFrame{
        private static Tablero tablero;
+       private static BarraMenu barraMenu;
        private static boolean gameOver = false;
+       
+    public Buscaminas(){
+        setSize(500, 500);
+        setTitle("Buscaminas Turbo v1.0");
+        setDefaultCloseOperation(Buscaminas.EXIT_ON_CLOSE);
+        initComponents();
+    }
+    
+    
+    private void initComponents(){
+        barraMenu = new BarraMenu();    //barraMenu es un JMenuBar
+        tablero = new Tablero();        //tablero es un JPanel
+        
+        this.setLayout(null);
+        this.add(barraMenu);
+        this.add(tablero);
+        
+        setJMenuBar(barraMenu);
+    }
+       
     public static void main(String[] args) {
-       tablero = new Tablero();
+       
+        new Buscaminas().setVisible(true);     //comentar esta linea para quitar la ventana
+        
+       //tablero = new Tablero();               //descomentar esta linea para quitar la ventana
        while(!gameOver){
            System.out.println("Trampas: ");
-           System.out.println(tablero.toStringDestapado());
+           //System.out.println(tablero.toStringDestapado());
            System.out.println(tablero.toString());     
            int[] pos = pedirPosicion();
            tablero.destaparCasilla(pos[0], pos[1]);
        }
+       System.out.println(tablero.toStringDestapado());
+       System.out.println("GAME OVER!");
     }
     
-    
+    public static void setGameOver(boolean isGameOver){
+        gameOver = isGameOver;
+    }
     
     public static int[] pedirPosicion(){
         Scanner scanner = new Scanner(System.in);
