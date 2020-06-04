@@ -1,6 +1,5 @@
-package buscaminas;
+package FicheroPartidaIO;
 
-import static buscaminas.Buscaminas.tablero;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -14,17 +13,13 @@ public class FicheroPartidaOut {
         oos = new ObjectOutputStream(new FileOutputStream(rutaAbsoluta));
     }
     
-    public void guardarPartida() throws IOException{
-        Casilla casillas[][] = tablero.getCasillas();   
-        for(int i = 0 ;i<casillas.length;i++){
-                for(int j = 0;j<casillas[0].length;j++){
-                   oos.writeObject(casillas[i][j]); 
-               }
-        }
+    public void guardarPartida(Partida partida) throws IOException{ 
+        oos.writeObject(partida); 
     }
     
     public void cerrarFichero() throws IOException{
-        oos.writeObject(Casilla.CENTINELA);
+        //Hemos contemplado la opcion de poner centinela, pero como dentro de cada archivo
+        //hay una única partida,no lo consideramos necesario
         oos.close();
     }
     

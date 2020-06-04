@@ -1,5 +1,8 @@
 package buscaminas;
 
+import FicheroPartidaIO.Partida;
+import java.awt.Color;
+import java.awt.GridLayout;
 import java.util.*;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -8,15 +11,16 @@ import utils.ArrayUtils;
 public class Tablero extends JPanel {
 
     //Componentes graficos
-    //pOner aqui botones
+    //poner aqui botones
     
     //DATOS CONSTANTES
     private final int NUM_BOMBAS = 10;
+    //VARIABLES
     private final int NUM_FILAS = 9;
     private final int NUM_COLUMNAS = 9;
-    //VARIABLES
-    private Casilla casillas[][] = new Casilla[NUM_FILAS][NUM_COLUMNAS];
     private int posicionBombas[] = new int[NUM_BOMBAS];
+    private Casilla casillas[][] = new Casilla[NUM_FILAS][NUM_COLUMNAS];
+    
 
     public Tablero(){
         posicionBombas = generarPosicionBombas();
@@ -39,13 +43,20 @@ public class Tablero extends JPanel {
                 }
             }
         }
-        //initComponents();
+        initComponents() ;
+        //prueba
+        this.setBackground(Color.red);
     }
    
     
     //WIP INICIALIZAR LOS BOTONES Y LAS COSAS QUE HAYAN DENTRO DEL TABLERO DE JUEGO
     private void initComponents(){
-        
+        this.setLayout(new GridLayout(NUM_FILAS,NUM_COLUMNAS));
+        for(int i =0;i<NUM_FILAS;i++){
+            for(int j= 0;j<NUM_COLUMNAS;j++){
+                this.add(casillas[i][j]);
+            }
+        }  
     }
     
     private int contarBombasAlrededor(Casilla casilla){
@@ -117,7 +128,7 @@ public class Tablero extends JPanel {
     private int getColumna(int posicion) {
         return (posicion % NUM_COLUMNAS);
     }
-    
+ 
     //Genera un array de 10 numeros no repetidos que van desde 0 hasta (NUM_FILAS*NUM_COLUMNAS-1)
     private int[] generarPosicionBombas() {
         //Hardcodeo cosas para hacer pruebas
@@ -206,7 +217,7 @@ public class Tablero extends JPanel {
     
     public void destaparCasilla(int fila,int columna){
         //se destapa la casilla seleccionada
-        casillas[fila][columna].setTapado(false);
+        casillas[fila][columna].destapar();
         
         //si la casilla tiene una bomba, se destapa todo el tablero y acaba el juego
         if(casillas[fila][columna].isBomba()){
@@ -216,6 +227,10 @@ public class Tablero extends JPanel {
     
     public Casilla[][] getCasillas(){
         return casillas;
+    }
+    
+    public void setCasillas(Casilla [][] casillas){
+        this.casillas = casillas;
     }
     
 }

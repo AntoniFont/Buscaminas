@@ -1,9 +1,9 @@
 package buscaminas;
 
 import java.io.Serializable;
+import javax.swing.JButton;
 
-public class Casilla implements Serializable{
-    
+public class Casilla extends JButton implements Serializable {
     
     //CONSTANTES
     
@@ -17,13 +17,25 @@ public class Casilla implements Serializable{
     public static final Casilla CENTINELA = new Casilla(-1,-1,false);
     
     
+    
+    
     public Casilla(){
+    }
+    
+    public void destapar(){
+        this.tapado = false;
+        //Seteamos la imagen(de momento texto)
+        if(tieneBomba){
+            setText("x");
+        }else{
+            setText("" + numero);
+        }
     }
     
     public Casilla(int posFila, int posCol, boolean tieneBomba){
         this.tieneBomba = tieneBomba;
         this.posFila = posFila;
-        this.posCol = posCol;
+        this.posCol = posCol;        
     }
 
     public int getPosFila() {
@@ -49,12 +61,9 @@ public class Casilla implements Serializable{
     public boolean isTapado() {
         return tapado;
     }
-
-    public void setTapado(boolean tapado) {
-        this.tapado = tapado;
-    }
+    
     
     public boolean isCentinela(){
-        return (    getPosFila() == -1 && getPosCol() == -1 && !isBomba()   ); 
+        return (getPosFila() == -1 && getPosCol() == -1 && !isBomba()   ); 
     }
 }
