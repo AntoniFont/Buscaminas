@@ -1,9 +1,11 @@
 package buscaminas;
 
 import static buscaminas.Buscaminas.tablero;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.Serializable;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 
 public class Casilla extends JButton implements Serializable {
@@ -39,9 +41,9 @@ public class Casilla extends JButton implements Serializable {
         this.tapado = false;
         //Seteamos la imagen(de momento texto)
         if(tieneBomba){
-            setText("x");
+            setIcon(new ImageIcon("numeros/bomba.png"));
         }else{
-            setText("" + numBombasAlrededor);
+            setIcon(new ImageIcon("numeros/"+numBombasAlrededor+".jpg"));
         }      
         //Hacemos que no se puede hacer click
         this.setEnabled(false);  
