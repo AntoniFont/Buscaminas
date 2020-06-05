@@ -5,8 +5,10 @@ import FicheroPartidaIO.FicheroPartidaOut;
 import FicheroPartidaIO.Partida;
 import elementosVisualesInteractuables.BarraMenu;
 import java.awt.BorderLayout;
+import java.awt.Image;
 import java.io.IOException;
-import java.util.Scanner;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
@@ -25,15 +27,16 @@ public class Buscaminas extends JFrame{
     }
     
     private void initComponents(){
-        
         this.setLayout(new BorderLayout());
         this.setResizable(true);
         this.add(tablero,BorderLayout.CENTER);
         this.setJMenuBar(barraMenu);
     }
        
-    public static void main(String[] args) {
-       new Buscaminas().setVisible(true);              
+    public static void main(String[] args) throws Exception{
+       Buscaminas a = new Buscaminas();  
+       a.setVisible(true);
+       a.tablero.setIconosPorDefecto();
     }
     
     public static void guardarPartida(String rutaGuardado) {
