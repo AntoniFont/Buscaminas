@@ -57,9 +57,20 @@ public class Buscaminas extends JFrame{
         }
     }
     
-    public static void finalizarJuego(){
+    public static void reiniciarPartida(){
+        tablero.taparTodasLasCasillas();
+    }
+    
+    //Metodo que finaliza el partida en derrota
+    public static void finalizarPartidaDerrota(){
         tablero.destaparTodasLasCasillas();
-        JOptionPane.showMessageDialog(null, "has perdido", "alert", JOptionPane.ERROR_MESSAGE);
+        JOptionPane.showMessageDialog(null, "Has perdido", "Derrota", JOptionPane.ERROR_MESSAGE);
+    }
+    
+    //Metodo que finaliza el juego en derrota
+    public static void finalizarPartidaVictoria(){
+        tablero.destaparTodasLasCasillas();
+        JOptionPane.showMessageDialog(null, "Has Ganado!", "Victoria!", JOptionPane.INFORMATION_MESSAGE);
     }
 
 }

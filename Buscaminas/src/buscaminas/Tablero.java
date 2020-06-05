@@ -1,6 +1,5 @@
 package buscaminas;
 
-import java.awt.Color;
 import java.awt.GridLayout;
 import java.util.*;
 import javax.swing.JPanel;
@@ -12,9 +11,13 @@ public class Tablero extends JPanel {
     private static final int NUM_BOMBAS = 10;
     private static final int NUM_FILAS = 9;
     private static final int NUM_COLUMNAS = 9;
+    //Constante que indica cuantas casillas hay que no son bomba
+    private static final int NUM_CASILLAS_SIN_BOMBA = NUM_FILAS*NUM_COLUMNAS - NUM_BOMBAS;
     //VARIABLES
     private static int posicionBombas[] = new int[NUM_BOMBAS];
     private static Casilla casillas[][] = new Casilla[NUM_FILAS][NUM_COLUMNAS];
+    //Variable que indica el numero de casillas destapadas en la partida actual
+    private static int casillasDestapadas = 0;
     
     public Tablero(){
         //Generamos las posiciones de las bombas
@@ -143,10 +146,23 @@ public class Tablero extends JPanel {
         return false;
     }
         
-    public void evaluarSiCasillaClickadaEsBombaYPerderSiEsNecesario(int fila , int columna){
+    //Método que al clickar una casilla, evalua si se ha ganado, perdido, o si
+    //por lo contrario, el juego sigue
+    public void evaluarCondicionVictoria(int fila , int columna){
+        
+        //Si se ha destapado una casilla con bomba, finaliza la partida con derrota
         if(casillas[fila][columna].isBomba()){
-            System.out.println("asd");
-            Buscaminas.finalizarJuego();
+            
+            //el parametro false indica que se finaliza el juego con derrota
+            Buscaminas.finalizarPartidaDerrota();
+        }
+        
+        //Si se han destapado todas las casillas sin bomba, finaliza la partida
+        //con victoria
+        if(casillasDestapadas == NUM_CASILLAS_SIN_BOMBA){
+            
+            //el parametro true indica que se finaliza el juego con victoria
+            Buscaminas.finalizarPartidaVictoria();
         }
     }
     
@@ -160,6 +176,16 @@ public class Tablero extends JPanel {
         }
     }
     
+    public void taparTodasLasCasillas(){
+        for(int i = 0;i<NUM_FILAS;i++){
+            for (int j = 0; j < NUM_COLUMNAS; j++) {
+                if(!casillas[i][j].isTapado()){
+                    casillas[i][j].tapar();
+                }
+            }
+        }
+    }
+    
     public Casilla[][] getCasillas(){
         return casillas;
     }
@@ -168,9 +194,8 @@ public class Tablero extends JPanel {
         this.casillas = casillas;
     }
     
-    //Método que actualiza las casillas actuales con las casillas que vienen dadas
-    //por una partida
-    //public void setPartida(Partida p){
-        
-    //}
+    //Método que incrementa el numero
+    public void incrementarCasillasDestapadas(){
+        if(casillasDestapadas < NUM_CASILLAS_SIN_BOMBA) casillasDestapadas++;
+    }
 }

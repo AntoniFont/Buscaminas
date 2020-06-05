@@ -18,11 +18,13 @@ public class Casilla extends JButton implements Serializable {
     private ActionListener funcionalidadCasilla = new ActionListener(){
         @Override
         public void actionPerformed(ActionEvent e) {
-                Casilla casillaPulsada = (Casilla) e.getSource();
-                int columna = casillaPulsada.getColumna();
-                int fila = casillaPulsada.getFila();
-                tablero.evaluarSiCasillaClickadaEsBombaYPerderSiEsNecesario(fila,columna);
-                tablero.getCasillas()[fila][columna].destapar();
+            Casilla casillaPulsada = (Casilla) e.getSource();
+            int columna = casillaPulsada.getColumna();
+            int fila = casillaPulsada.getFila();
+            //
+            tablero.getCasillas()[fila][columna].destapar();
+            tablero.incrementarCasillasDestapadas();
+            tablero.evaluarCondicionVictoria(fila,columna);
         }
     };
     
@@ -43,6 +45,12 @@ public class Casilla extends JButton implements Serializable {
         }      
         //Hacemos que no se puede hacer click
         this.setEnabled(false);  
+    }
+    
+    public void tapar(){
+        this.tapado = true;
+        setText("");
+        this.setEnabled(true);
     }
 
     public int getFila() {
