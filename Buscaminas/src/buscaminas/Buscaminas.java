@@ -24,17 +24,17 @@ public class Buscaminas extends JFrame{
         this.add(barraMenu);
         this.add(tablero);
         
-        setJMenuBar(barraMenu);
+        this.setJMenuBar(barraMenu);
     }
        
     public static void main(String[] args) {
        
-        new Buscaminas().setVisible(true);     //comentar esta linea para quitar la ventana
+        //new Buscaminas().setVisible(true);     //comentar esta linea para quitar la ventana
         
-       //tablero = new Tablero();               //descomentar esta linea para quitar la ventana
+       tablero = new Tablero();               //descomentar esta linea para quitar la ventana
        while(!gameOver){
            System.out.println("Trampas: ");
-           //System.out.println(tablero.toStringDestapado());
+           System.out.println(tablero.toStringDestapado());
            System.out.println(tablero.toString());     
            int[] pos = pedirPosicion();
            tablero.destaparCasilla(pos[0], pos[1]);
@@ -85,4 +85,15 @@ public class Buscaminas extends JFrame{
         return pos;
     }  
     
+    //public static void guardarPartida(){}
+    //Metodo que guarda la partida actual (guarda el array de casillas del tablero)
+            //FicheroPartidaOut fpo = new FicheroPartidaOut();
+            //Casilla [][] partida = tablero.getCasillas();     una partida sera un array de casillas
+            //fpo.guardar(partida);
+    
+    //public static void cargarPartida(){}
+    //Metodo que carga una partida (array de casillas) al buscaminas actual.
+            //FicheroPartidaIn fpi = new FicheroPartidaIn();
+            //Partida partida = fpi.getPartida();
+            //tablero.setPartida(partida);
 }
