@@ -1,40 +1,64 @@
 package buscaminas;
-public class Casilla {
-    
-    
-    //CONSTANTES
+
+import static buscaminas.Buscaminas.tablero;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.Serializable;
+import javax.swing.JButton;
+
+public class Casilla extends JButton implements Serializable {
     
     //VARIABLES
     private boolean tieneBomba;
     private boolean tapado = true;
-    private int numero = 0;
-    private int posFila;
-    private int posCol;
-    
-    
-    public Casilla(){
-    }
+    private int numBombasAlrededor = 0;
+    private int fila;
+    private int columna;
+        
+    private ActionListener funcionalidadCasilla = new ActionListener(){
+        @Override
+        public void actionPerformed(ActionEvent e) {
+                Casilla casillaPulsada = (Casilla) e.getSource();
+                int columna = casillaPulsada.getColumna();
+                int fila = casillaPulsada.getFila();
+                tablero.evaluarSiCasillaClickadaEsBombaYPerderSiEsNecesario(fila,columna);
+                tablero.getCasillas()[fila][columna].destapar();
+        }
+    };
     
     public Casilla(int posFila, int posCol, boolean tieneBomba){
         this.tieneBomba = tieneBomba;
-        this.posFila = posFila;
-        this.posCol = posCol;
-    }
-
-    public int getPosFila() {
-        return posFila;
-    }
-
-    public int getPosCol() {
-        return posCol;
+        this.fila = posFila;
+        this.columna = posCol;     
+        this.addActionListener(funcionalidadCasilla);
     }
     
-    public int getNumero(){
-        return numero;
+    public void destapar(){
+        this.tapado = false;
+        //Seteamos la imagen(de momento texto)
+        if(tieneBomba){
+            setText("x");
+        }else{
+            setText("" + numBombasAlrededor);
+        }      
+        //Hacemos que no se puede hacer click
+        this.setEnabled(false);  
+    }
+
+    public int getFila() {
+        return fila;
+    }
+
+    public int getColumna() {
+        return columna;
     }
     
-    public void setNumero(int numero) {
-        this.numero = numero;
+    public int getNumBombasAlrededor(){
+        return numBombasAlrededor;
+    }
+    
+    public void setNumBombasAlrededor(int numero) {
+        this.numBombasAlrededor = numero;
     }
     
     public boolean isBomba(){
@@ -44,9 +68,6 @@ public class Casilla {
     public boolean isTapado() {
         return tapado;
     }
-
-    public void setTapado(boolean tapado) {
-        this.tapado = tapado;
-    }
-    
+     
 }
+    
