@@ -7,8 +7,6 @@ import elementosVisualesInteractuables.BarraMenu;
 import java.awt.BorderLayout;
 import java.awt.Image;
 import java.io.IOException;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
@@ -61,10 +59,20 @@ public class Buscaminas extends JFrame{
         }
     }
     
-    public static void finalizarJuego(){
-        tablero.destaparTodasLasCasillas();
-        JOptionPane.showMessageDialog(null, "has perdido", "alert", JOptionPane.ERROR_MESSAGE);
+    public static void reiniciarPartida(){
+        tablero.taparTodasLasCasillas();
     }
     
+    //Metodo que finaliza el partida en derrota
+    public static void finalizarPartidaDerrota(){
+        tablero.destaparTodasLasCasillas();
+        JOptionPane.showMessageDialog(null, "Has perdido", "Derrota", JOptionPane.ERROR_MESSAGE);
+    }
     
+    //Metodo que finaliza el juego en derrota
+    public static void finalizarPartidaVictoria(){
+        tablero.destaparTodasLasCasillas();
+        JOptionPane.showMessageDialog(null, "Has Ganado!", "Victoria!", JOptionPane.INFORMATION_MESSAGE);
+    }
+
 }

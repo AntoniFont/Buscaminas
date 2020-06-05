@@ -10,6 +10,7 @@ import java.io.Serializable;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
+
 public class Casilla extends JLabel implements Serializable {
     
     //VARIABLES
@@ -35,7 +36,7 @@ public class Casilla extends JLabel implements Serializable {
             Casilla casillaPulsada = (Casilla) e.getSource();
             int columna = casillaPulsada.getColumna();
             int fila = casillaPulsada.getFila();
-            tablero.evaluarSiCasillaClickadaEsBombaYPerderSiEsNecesario(fila,columna);
+            tablero.evaluarCondicionVictoria(fila,columna);
             tablero.getCasillas()[fila][columna].destapar();
         }
 
@@ -45,6 +46,7 @@ public class Casilla extends JLabel implements Serializable {
 
         @Override
         public void mouseExited(MouseEvent e) {
+        
         }
     };
     
@@ -72,6 +74,15 @@ public class Casilla extends JLabel implements Serializable {
         }
         Image imagenReescalada = imagenCasilla.getScaledInstance(anchoCasilla,altoCasilla,Image.SCALE_DEFAULT);
         setIcon(new ImageIcon(imagenReescalada)); 
+     
+        //Hacemos que no se puede hacer click
+        this.setEnabled(false);  
+    }
+    
+    public void tapar(){
+        this.tapado = true;
+        setText("");
+        this.setEnabled(true);
     }
 
     public int getFila() {
