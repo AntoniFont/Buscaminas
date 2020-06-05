@@ -1,55 +1,48 @@
 package buscaminas;
 
-import FicheroPartidaIO.Partida;
 import java.awt.Color;
 import java.awt.GridLayout;
 import java.util.*;
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 import utils.ArrayUtils;
 
 public class Tablero extends JPanel {
-
-    //Componentes graficos
-    //poner aqui botones
     
     //DATOS CONSTANTES
-    private final int NUM_BOMBAS = 10;
+    private static final int NUM_BOMBAS = 10;
+    private static final int NUM_FILAS = 9;
+    private static final int NUM_COLUMNAS = 9;
     //VARIABLES
-    private final int NUM_FILAS = 9;
-    private final int NUM_COLUMNAS = 9;
-    private int posicionBombas[] = new int[NUM_BOMBAS];
-    private Casilla casillas[][] = new Casilla[NUM_FILAS][NUM_COLUMNAS];
+    private static int posicionBombas[] = new int[NUM_BOMBAS];
+    private static Casilla casillas[][] = new Casilla[NUM_FILAS][NUM_COLUMNAS];
     
-
     public Tablero(){
+        //Generamos las posiciones de las bombas
         posicionBombas = generarPosicionBombas();
-        //Iteramos por todas las posiciones
-        for(int p = 0; p < NUM_FILAS * NUM_COLUMNAS; p++) {
-            if (seHaGeneradoBombaEnLaPos(p)) {
+        //Iteramos por todas las posiciones y generamos una casilla con bomba o sin bomba segun corresponde
+        for(int posActual = 0; posActual < NUM_FILAS * NUM_COLUMNAS; posActual++) {
+            int filaActual = convertirPosicionAFila(posActual);
+            int columnaActual = convertirPosicionAColumna(posActual);
+            if (seHaGeneradoBombaEnLaPos(posActual)) {
                 //Generamos casilla sin bomba
-                casillas[getFila(p)][getColumna(p)] = new Casilla(getFila(p),getColumna(p), true);
+                casillas[filaActual][columnaActual] = new Casilla(filaActual,columnaActual,true);
             } else {
                 //Generamos casilla sin bomba
-                casillas[getFila(p)][getColumna(p)] = new Casilla(getFila(p),getColumna(p),false);
+                casillas[filaActual][columnaActual] = new Casilla(filaActual,columnaActual,false);
             }
         }
-        //Generar los numeros de las bombas
-        for(int i = 0; i<NUM_FILAS; i++){
-            for(int j = 0; j<NUM_COLUMNAS; j++){
-                if(!casillas[i][j].isBomba()){  //generamos numero
+        //Se cuentan las bombas de alrededor y añadimos ese numero a la casilla
+        for(int i = 0; i<NUM_FILAS;i++){
+            for(int j = 0;j<NUM_COLUMNAS;j++){
+                if(!casillas[i][j].isBomba()){
                     int numeroBombas = contarBombasAlrededor(casillas[i][j]);
-                    casillas[i][j].setNumero(numeroBombas);
+                    casillas[i][j].setNumBombasAlrededor(numeroBombas);
                 }
             }
         }
         initComponents() ;
-        //prueba
-        this.setBackground(Color.red);
     }
    
-    
-    //WIP INICIALIZAR LOS BOTONES Y LAS COSAS QUE HAYAN DENTRO DEL TABLERO DE JUEGO
     private void initComponents(){
         this.setLayout(new GridLayout(NUM_FILAS,NUM_COLUMNAS));
         for(int i =0;i<NUM_FILAS;i++){
@@ -60,52 +53,43 @@ public class Tablero extends JPanel {
     }
     
     private int contarBombasAlrededor(Casilla casilla){
-        //List<Casilla> casillasAlderedor = getCasillasAlderedor(casilla);
         Casilla casillasAlrededor[] = getCasillasAlrededor(casilla);
-        int contBombas = 0;
-        
-        for (Casilla c : casillasAlrededor) { 		      
-           if(c != null && c.isBomba()){ //Si existe la casilla y tiene bomba
-               contBombas++;
+        int numBombasAlrededor = 0;
+        for (Casilla c : casillasAlrededor) { 
+           //Si existe la casilla hay casillas,como las de los lados, que no tienen 8 casillas adyacentes)
+           //Y tiene bomba
+           if(c != null && c.isBomba()){ 
+               numBombasAlrededor++;
            }		
         }
-        return contBombas;
+        return numBombasAlrededor;
     }
     
     private Casilla[] getCasillasAlrededor(Casilla casilla){
-        //List<Casilla> casillasAlderedor = new ArrayList<>();
         Casilla casillasAlrededor[] = new Casilla[8];
-        
+        int filaCasillaSeleccionada = casilla.getFila();
+        int columnaCasillaSeleccionada = casilla.getColumna();
         //  c c c
         //  c x c   x: casilla seleccionada
-        //  c c c
-    
-        //posiciones de las casillas a comprobar respecto a la casilla seleccionada
+        //  c c c 
+        //posiciones a sumar para obtener las casillas adyacentes
         int [][] posiciones = {     
-            {-1,-1},    //nor-oeste
-            {-1,0},     //oeste
-            {-1,1},     //sur-oeste
-            {0,-1},     //norte
-            {0,1},      //sur
-            {1,-1},     //nor-este
-            {1,0},      //este
-            {1,1}};     //sur-este
-        //iteramos por cada posicion(que es un vector de 2 componentes) de 
-        //las casillas adyacentes a la seleccionada
+            {-1,-1},    //casilla al nor-oeste
+            {-1,0},     //casilla al oeste
+            {-1,1},     //casilla sur-oeste
+            {0,-1},     //casilla al norte
+            {0,1},      //casilla al sur
+            {1,-1},     //casilla al nor-este
+            {1,0},      //casilla al este
+            {1,1}       //casilla al sur-este
+        };          
         for (int i = 0; i < posiciones.length; i++) {
+            int posFilaCasillaAdyacente = casilla.getFila() + posiciones[i][0];
+            int posColCasillaAdyacente = casilla.getColumna() + posiciones[i][1];
             //obtenemos la posicion de la casilla adyacente la cual vamos a comprobar
             //si es una posicion valida del tablero
-            int posFilaCasillaAdyacente = casilla.getPosFila() + posiciones[i][0];
-            int posColCasillaAdyacente = casilla.getPosCol() + posiciones[i][1];
-
-            //si la casilla adyacente actual esta en una posicion valida del tablero,
-            //entonces se añade a la lista de casillas adyacentes validas
-//            if(posicionCasillaValida(posFilaCasillaAdyacente,posColCasillaAdyacente)){
-//                casillasAlderedor.add(casillas[posFilaCasillaAdyacente][posColCasillaAdyacente]);
-//            }else{
-//                casillasAlrededor.add(null);
-//            }        
-            if (posicionCasillaValida(posFilaCasillaAdyacente,posColCasillaAdyacente)){
+ 
+            if (existeEstaPosEnElTablero(posFilaCasillaAdyacente,posColCasillaAdyacente)){
                 casillasAlrededor[i] = casillas[posFilaCasillaAdyacente][posColCasillaAdyacente];
             }else{
                 casillasAlrededor[i] = null;
@@ -114,18 +98,16 @@ public class Tablero extends JPanel {
         return casillasAlrededor;
     }
     
-    // devuelve un booleano dependiendo de si la posicion del una casilla del tablero 
-    //pasada por paremtro esta dentro del tablero(posicion valida) o no.
-    private boolean posicionCasillaValida(int posFila, int posCol){
+    private boolean existeEstaPosEnElTablero(int posFila, int posCol){
         return (posFila >= 0 && posFila < NUM_FILAS) &&
                 (posCol >= 0 && posCol < NUM_COLUMNAS);
     }
     
-    private int getFila(int posicion) {
+    public int convertirPosicionAFila(int posicion) {
         return (int) (posicion / NUM_FILAS);
     }
 
-    private int getColumna(int posicion) {
+    public int convertirPosicionAColumna(int posicion) {
         return (posicion % NUM_COLUMNAS);
     }
  
@@ -160,69 +142,22 @@ public class Tablero extends JPanel {
         }
         return false;
     }
-
-    @Override
-    public String toString() {
-        //Los numeros de las columnas
-        String tableroTexto = "  ";
-        for (int j = 0; j < NUM_COLUMNAS; j++) {
-            tableroTexto += j + " ";
+        
+    public void evaluarSiCasillaClickadaEsBombaYPerderSiEsNecesario(int fila , int columna){
+        if(casillas[fila][columna].isBomba()){
+            System.out.println("asd");
+            Buscaminas.finalizarJuego();
         }
-        tableroTexto += '\n'; //Pasamos a la siguiente fila
-        //El tablero en sí (con los numeros de la fila delante de cada fila)
-        for (int i = 0; i < NUM_FILAS; i++) {
-            tableroTexto += i + " "; //Añadimos el numero de la fila
-            for (int j = 0; j < NUM_COLUMNAS; j++) {
-                //Los valores en si
-                if (casillas[i][j].isTapado()) {
-                    tableroTexto += "?";
-                } else {
-                    if (casillas[i][j].isBomba()) {
-                        tableroTexto += "x";
-                    } else {
-                        tableroTexto += casillas[i][j].getNumero();
-                    }
-                }
-                tableroTexto += " "; //Metemos un espacio para separar los valores
-            }
-            tableroTexto += "\n"; //Pasamos a la siguiente fila
-        }
-        return tableroTexto;
-    }
-
-    //Hace lo mismo que toString pero muestra los que hay en los valores tapados
-    public String toStringDestapado() {
-        //Los numeros de las columnas
-        String tableroTexto = "  ";
-        for (int j = 0; j < NUM_COLUMNAS; j++) {
-            tableroTexto += j + " ";
-        }
-        tableroTexto += '\n'; //Pasamos a la siguiente fila
-        //El tablero en sí (con los numeros de la fila delante de cada fila)
-        for (int i = 0; i < NUM_FILAS; i++) {
-            tableroTexto += i + " "; //Añadimos el numero de la fila
-            for (int j = 0; j < NUM_COLUMNAS; j++) {
-                //Los valores en si
-                if (casillas[i][j].isBomba()) {
-                    tableroTexto += "x";
-                } else {
-                    tableroTexto += casillas[i][j].getNumero(); 
-                }
-                tableroTexto += " "; //Metemos un espacio para separar los valores
-            }
-            tableroTexto += "\n"; //Pasamos a la siguiente fila
-        }
-        return tableroTexto;
     }
     
-    public void destaparCasilla(int fila,int columna){
-        //se destapa la casilla seleccionada
-        casillas[fila][columna].destapar();
-        
-        //si la casilla tiene una bomba, se destapa todo el tablero y acaba el juego
-        if(casillas[fila][columna].isBomba()){
-            Buscaminas.setGameOver(true);
-        }    
+    public void destaparTodasLasCasillas(){
+        for(int i = 0;i<NUM_FILAS;i++){
+            for (int j = 0; j < NUM_COLUMNAS; j++) {
+                if(casillas[i][j].isTapado()){
+                    casillas[i][j].destapar();
+                }
+            }
+        }
     }
     
     public Casilla[][] getCasillas(){

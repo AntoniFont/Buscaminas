@@ -1,25 +1,36 @@
 package buscaminas;
 
+import static buscaminas.Buscaminas.tablero;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.Serializable;
 import javax.swing.JButton;
 
 public class Casilla extends JButton implements Serializable {
     
-    //CONSTANTES
-    
     //VARIABLES
     private boolean tieneBomba;
     private boolean tapado = true;
-    private int numero = 0;
-    private int posFila;
-    private int posCol;
+    private int numBombasAlrededor = 0;
+    private int fila;
+    private int columna;
+        
+    private ActionListener funcionalidadCasilla = new ActionListener(){
+        @Override
+        public void actionPerformed(ActionEvent e) {
+                Casilla casillaPulsada = (Casilla) e.getSource();
+                int columna = casillaPulsada.getColumna();
+                int fila = casillaPulsada.getFila();
+                tablero.evaluarSiCasillaClickadaEsBombaYPerderSiEsNecesario(fila,columna);
+                tablero.getCasillas()[fila][columna].destapar();
+        }
+    };
     
-    public static final Casilla CENTINELA = new Casilla(-1,-1,false);
-    
-    
-    
-    
-    public Casilla(){
+    public Casilla(int posFila, int posCol, boolean tieneBomba){
+        this.tieneBomba = tieneBomba;
+        this.fila = posFila;
+        this.columna = posCol;     
+        this.addActionListener(funcionalidadCasilla);
     }
     
     public void destapar(){
@@ -28,30 +39,26 @@ public class Casilla extends JButton implements Serializable {
         if(tieneBomba){
             setText("x");
         }else{
-            setText("" + numero);
-        }
-    }
-    
-    public Casilla(int posFila, int posCol, boolean tieneBomba){
-        this.tieneBomba = tieneBomba;
-        this.posFila = posFila;
-        this.posCol = posCol;        
+            setText("" + numBombasAlrededor);
+        }      
+        //Hacemos que no se puede hacer click
+        this.setEnabled(false);  
     }
 
-    public int getPosFila() {
-        return posFila;
+    public int getFila() {
+        return fila;
     }
 
-    public int getPosCol() {
-        return posCol;
+    public int getColumna() {
+        return columna;
     }
     
-    public int getNumero(){
-        return numero;
+    public int getNumBombasAlrededor(){
+        return numBombasAlrededor;
     }
     
-    public void setNumero(int numero) {
-        this.numero = numero;
+    public void setNumBombasAlrededor(int numero) {
+        this.numBombasAlrededor = numero;
     }
     
     public boolean isBomba(){
@@ -61,9 +68,6 @@ public class Casilla extends JButton implements Serializable {
     public boolean isTapado() {
         return tapado;
     }
-    
-    
-    public boolean isCentinela(){
-        return (getPosFila() == -1 && getPosCol() == -1 && !isBomba()   ); 
-    }
+     
 }
+    
