@@ -6,7 +6,11 @@ import FicheroPartidaIO.Partida;
 import elementosVisualesInteractuables.BarraMenu;
 import java.awt.BorderLayout;
 import java.awt.Image;
+import java.io.File;
 import java.io.IOException;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
@@ -18,7 +22,7 @@ public class Buscaminas extends JFrame{
     public static final BarraMenu barraMenu = new BarraMenu();
        
     public Buscaminas(){
-        setSize(500, 500);
+        setSize(700, 700);
         setTitle("Buscaminas");
         setDefaultCloseOperation(Buscaminas.EXIT_ON_CLOSE);
         initComponents();
@@ -32,9 +36,22 @@ public class Buscaminas extends JFrame{
     }
        
     public static void main(String[] args) throws Exception{
-       Buscaminas a = new Buscaminas();  
-       a.setVisible(true);
-       a.tablero.setIconosPorDefecto();
+       Buscaminas buscaminas = new Buscaminas();  
+       buscaminas.setVisible(true);
+       buscaminas.tablero.setIconosPorDefecto();
+       reproducirMusica();
+    }
+    
+    public static void reproducirMusica(){
+        try{
+            AudioInputStream audioInputStream =  AudioSystem.getAudioInputStream(new File("ita.wav").getAbsoluteFile());       
+            Clip clip = AudioSystem.getClip(); 
+            clip.open(audioInputStream); 
+            clip.loop(Clip.LOOP_CONTINUOUSLY); 
+        }catch(Exception e){
+        
+        }
+    
     }
     
     public static void guardarPartida(String rutaGuardado) {

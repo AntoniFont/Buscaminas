@@ -62,19 +62,13 @@ public class Tablero extends JPanel {
             }
         }
         
-        
-        // create AudioInputStream object 
-        AudioInputStream audioInputStream =  AudioSystem.getAudioInputStream(new File("ita.wav").getAbsoluteFile());       
-        // create clip reference 
-        Clip clip = AudioSystem.getClip(); 
-        // open audioInputStream to the clip 
-        clip.open(audioInputStream); 
-        clip.loop(Clip.LOOP_CONTINUOUSLY); 
-        
     }
    
     private void initComponents(){
-        this.setLayout(new GridLayout(NUM_FILAS,NUM_COLUMNAS));
+        GridLayout layout = new GridLayout(NUM_FILAS,NUM_COLUMNAS);
+        layout.setHgap(3);
+        layout.setVgap(3);
+        this.setLayout(layout);
         for(int i =0;i<NUM_FILAS;i++){
             for(int j= 0;j<NUM_COLUMNAS;j++){
                 this.add(casillas[i][j]);

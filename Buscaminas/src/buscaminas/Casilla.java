@@ -6,7 +6,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.IOException;
 import java.io.Serializable;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
@@ -73,16 +78,12 @@ public class Casilla extends JLabel implements Serializable {
             imagenCasilla = new ImageIcon("IMAGENES/" + numBombasAlrededor + ".jpg").getImage();            
         }
         Image imagenReescalada = imagenCasilla.getScaledInstance(anchoCasilla,altoCasilla,Image.SCALE_DEFAULT);
-        setIcon(new ImageIcon(imagenReescalada)); 
-     
-        //Hacemos que no se puede hacer click
-        this.setEnabled(false);  
+        setIcon(new ImageIcon(imagenReescalada));  
     }
     
     public void tapar(){
         this.tapado = true;
-        setText("");
-        this.setEnabled(true);
+        setImagenPorDefecto();
     }
 
     public int getFila() {
