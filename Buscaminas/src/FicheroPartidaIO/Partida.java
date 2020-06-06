@@ -4,20 +4,33 @@ import buscaminas.Casilla;
 import java.io.Serializable;
 
 
-//ArchivoDeGuardado
 public class Partida implements Serializable{
-    private Casilla casillas[][];
+    
+    private boolean casillasConBombas[][];
+    private boolean casillasTapadas[][];
+    private int bombasAlrededor[][];
+    private int filaDeLasCasillas[][];
+    private int columnaDeLasCasillas[][];
+    
+    
        
     public Partida(Casilla casillas[][]){
-        this.casillas = casillas;
+        int numFilas = casillas.length;
+        int numColumnas = casillas[0].length;
+
+        
+        
+        //Primero rellenamos el array de casillasConBombas
+        for(int i= 0;i<numFilas;i++){
+            for(int j = 0;j<numColumnas;j++){
+                int contadd
+                if(tieneBomba){
+                
+                }
+            }
+        }
+        
     }
-    
-    public Casilla [][] getCasillas(){
-        return casillas;
-    }
-    
-    public void generarArchivoDeGuardado(Casilla casillas[]){
-        //Obtenemos de las casillas unicamente los datos imprescindibles
-    }
+
 
 }

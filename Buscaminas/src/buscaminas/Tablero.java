@@ -1,12 +1,8 @@
 package buscaminas;
 
 import java.awt.GridLayout;
-import java.io.File;
 import java.io.IOException;
 import java.util.*;
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.JPanel;
@@ -53,15 +49,12 @@ public class Tablero extends JPanel {
         initComponents() ;
     }
     
-    public void setIconosPorDefecto() throws UnsupportedAudioFileException, IOException, LineUnavailableException{
-        
-        
+    public void setIconosPorDefecto(){
         for(int i = 0;i<NUM_FILAS;i++){
             for(int j= 0;j<NUM_COLUMNAS;j++){
                 casillas[i][j].setImagenPorDefecto();
             }
         }
-        
     }
    
     private void initComponents(){

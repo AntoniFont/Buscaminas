@@ -39,30 +39,18 @@ public class Buscaminas extends JFrame{
        Buscaminas buscaminas = new Buscaminas();  
        buscaminas.setVisible(true);
        buscaminas.tablero.setIconosPorDefecto();
-       reproducirMusica();
     }
+
     
-    public static void reproducirMusica(){
-        try{
-            AudioInputStream audioInputStream =  AudioSystem.getAudioInputStream(new File("ita.wav").getAbsoluteFile());       
-            Clip clip = AudioSystem.getClip(); 
-            clip.open(audioInputStream); 
-            clip.loop(Clip.LOOP_CONTINUOUSLY); 
-        }catch(Exception e){
-        
-        }
-    
-    }
-    
-    public static void guardarPartida(String rutaGuardado) {
-        try {
+    public static void guardarPartida(String rutaGuardado) throws Exception{
+        //try {
             FicheroPartidaOut fpo = new FicheroPartidaOut(rutaGuardado);
             Partida partida = new Partida(tablero.getCasillas());
             fpo.guardarPartida(partida);
             fpo.cerrarFichero();
-        } catch (IOException ex) {
-            System.out.println("No se ha podido guardar la partida, IOException");
-        }
+        //} catch (IOException ex) {
+            //System.out.println("No se ha podido guardar la partida, IOException");
+        //}
     }
     
     public static void cargarPartida(String rutaPartida) {
@@ -78,6 +66,7 @@ public class Buscaminas extends JFrame{
     
     public static void reiniciarPartida(){
         tablero.taparTodasLasCasillas();
+        
     }
     
     //Metodo que finaliza el partida en derrota
