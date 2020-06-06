@@ -1,20 +1,23 @@
-package FicheroPartidaIO;
+package ArchivoDeGuardadoIO;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 
-public class FicheroPartidaOut {
+public class ArchivoGuardadoOut {
     
+    //ATRIBUTOS
+    //CONSTANTES
     private final ObjectOutputStream oos;
     
-    public FicheroPartidaOut(String rutaAbsoluta) throws FileNotFoundException, IOException{
+    //CONSTRUCTOR
+    public ArchivoGuardadoOut(String rutaAbsoluta) throws FileNotFoundException, IOException{
         oos = new ObjectOutputStream(new FileOutputStream(rutaAbsoluta));
     }
     
-    public void guardarPartida(Partida partida) throws IOException{ 
-        oos.writeObject(partida); 
+    public void guardar(ArchivoDeGuardado archivoGuardado) throws IOException{ 
+        oos.writeObject(archivoGuardado); 
     }
     
     public void cerrarFichero() throws IOException{
@@ -22,7 +25,6 @@ public class FicheroPartidaOut {
         //hay una única partida,no lo consideramos necesario
         oos.close();
     }
-    
     
     
 }

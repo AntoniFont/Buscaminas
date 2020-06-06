@@ -1,6 +1,10 @@
+/*
+*   Clase Casilla. Sirve para englobar el concepto de Casilla y todas las funcionalidades 
+*   que requieran de esta.
+*/
+
 package buscaminas;
 
-import static buscaminas.Buscaminas.tablero;
 import java.awt.Image;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -10,7 +14,7 @@ import javax.swing.JLabel;
 
 
 public class Casilla extends JLabel implements Serializable {
-    
+    //ATRIBUTOS
     //VARIABLES
     private boolean tieneBomba;
     private boolean tapado = true;
@@ -18,36 +22,38 @@ public class Casilla extends JLabel implements Serializable {
     private int fila;
     private int columna;
     
+    //CONSTANTES
+    //Imagen por defecto reescalada que se carga en memoria principal para
+    //reducir tiempos de carga, ya que se reutiliza en varias partes
+    private final Image IMAGEN_POR_DEFECTO = new ImageIcon("IMAGENES/boton.png").getImage().getScaledInstance(71,68 ,Image.SCALE_SMOOTH);
         
-    private MouseListener funcionalidadCasilla = new MouseListener(){
+    private final MouseListener funcionalidadCasilla = new MouseListener(){
 
         @Override
-        public void mouseClicked(MouseEvent e) {
-        }
+        public void mouseClicked(MouseEvent e) {}
 
         @Override
-        public void mousePressed(MouseEvent e) {
-        }
+        public void mousePressed(MouseEvent e) {}
 
         @Override
         public void mouseReleased(MouseEvent e) {
             Casilla casillaPulsada = (Casilla) e.getSource();
             int columna = casillaPulsada.getColumna();
             int fila = casillaPulsada.getFila();
+            Tablero tablero = Buscaminas.getTablero();
+            
             tablero.evaluarCondicionVictoria(fila,columna);
             tablero.getCasillas()[fila][columna].destapar();
         }
 
         @Override
-        public void mouseEntered(MouseEvent e) {
-        }
+        public void mouseEntered(MouseEvent e) {}
 
         @Override
-        public void mouseExited(MouseEvent e) {
-        
-        }
+        public void mouseExited(MouseEvent e) {}
     };
     
+    //CONSTRUCTOR
     public Casilla(int posFila, int posCol, boolean tieneBomba){
         this.tieneBomba = tieneBomba;
         this.fila = posFila;
@@ -56,8 +62,7 @@ public class Casilla extends JLabel implements Serializable {
     }
     
     public void setImagenPorDefecto(){
-        Image imagenReescalada = new ImageIcon("IMAGENES/spa.jpg").getImage().getScaledInstance(this.getWidth(),this.getHeight(),Image.SCALE_SMOOTH);
-        this.setIcon(new ImageIcon(imagenReescalada));
+        this.setIcon(new ImageIcon(IMAGEN_POR_DEFECTO));
     }
     
     public void destapar(){
@@ -65,6 +70,9 @@ public class Casilla extends JLabel implements Serializable {
         Image imagenCasilla;
         int anchoCasilla = this.getWidth();
         int altoCasilla = this.getHeight();
+        
+        //Asignacion de imagen a la casilla a destapar dependiendo de si contiene
+        //una bomba o no
         if(tieneBomba){
             imagenCasilla = new ImageIcon("IMAGENES/bomba.png").getImage();   
         }else{
@@ -72,6 +80,7 @@ public class Casilla extends JLabel implements Serializable {
         }
         Image imagenReescalada = imagenCasilla.getScaledInstance(anchoCasilla,altoCasilla,Image.SCALE_DEFAULT);
         setIcon(new ImageIcon(imagenReescalada));  
+        Buscaminas.getTablero().incrementarCasillasDestapadas();
     }
     
     public void tapar(){
@@ -79,6 +88,7 @@ public class Casilla extends JLabel implements Serializable {
         setImagenPorDefecto();
     }
 
+    //GETTERS
     public int getFila() {
         return fila;
     }
@@ -91,16 +101,33 @@ public class Casilla extends JLabel implements Serializable {
         return numBombasAlrededor;
     }
     
-    public void setNumBombasAlrededor(int numero) {
-        this.numBombasAlrededor = numero;
-    }
-    
     public boolean isBomba(){
         return tieneBomba;
     }
 
     public boolean isTapado() {
         return tapado;
+    }
+    
+    //SETTERS
+    public void setTieneBomba(boolean tieneBomba) {
+        this.tieneBomba = tieneBomba;
+    }
+    
+    public void setTapado(boolean tapado) {
+        this.tapado = tapado;
+    }
+    
+    public void setNumBombasAlrededor(int numero) {
+        this.numBombasAlrededor = numero;
+    }
+
+    public void setFila(int fila) {
+        this.fila = fila;
+    }
+
+    public void setColumna(int columna) {
+        this.columna = columna;
     }
      
 }

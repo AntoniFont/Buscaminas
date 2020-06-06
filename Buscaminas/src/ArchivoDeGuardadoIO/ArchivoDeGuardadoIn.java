@@ -1,4 +1,4 @@
-package FicheroPartidaIO;
+package ArchivoDeGuardadoIO;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -6,16 +6,16 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 
 
-public class FicheroPartidaIn {
+public class ArchivoDeGuardadoIn {
     
     private final ObjectInputStream ois;
     
-    public FicheroPartidaIn(String ruta) throws FileNotFoundException, IOException{
+    public ArchivoDeGuardadoIn(String ruta) throws FileNotFoundException, IOException{
         ois = new ObjectInputStream(new FileInputStream(ruta));
     }
     
-    public Partida getPartida() throws IOException, ClassNotFoundException{
-        return (Partida) ois.readObject();
+    public ArchivoDeGuardado getArchivoDeGuardado() throws IOException, ClassNotFoundException{
+        return (ArchivoDeGuardado) ois.readObject();
     }
     
     public void cerrarFichero() throws IOException{

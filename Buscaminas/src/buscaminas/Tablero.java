@@ -1,5 +1,6 @@
 package buscaminas;
 
+import ArchivoDeGuardadoIO.ArchivoDeGuardado;
 import java.awt.GridLayout;
 import java.io.IOException;
 import java.util.*;
@@ -49,7 +50,7 @@ public class Tablero extends JPanel {
         initComponents() ;
     }
     
-    public void setIconosPorDefecto(){
+    private void setIconosPorDefecto(){
         for(int i = 0;i<NUM_FILAS;i++){
             for(int j= 0;j<NUM_COLUMNAS;j++){
                 casillas[i][j].setImagenPorDefecto();
@@ -66,7 +67,8 @@ public class Tablero extends JPanel {
             for(int j= 0;j<NUM_COLUMNAS;j++){
                 this.add(casillas[i][j]);
             }
-        }  
+        } 
+        setIconosPorDefecto();
     }
     
     private int contarBombasAlrededor(Casilla casilla){
@@ -169,15 +171,16 @@ public class Tablero extends JPanel {
             
             //el parametro false indica que se finaliza el juego con derrota
             Buscaminas.finalizarPartidaDerrota();
-        }
-        
-        //Si se han destapado todas las casillas sin bomba, finaliza la partida
-        //con victoria
-        if(casillasDestapadas == NUM_CASILLAS_SIN_BOMBA){
+            
+            //Si se han destapado todas las casillas sin bomba, finaliza la partida
+            //con victoria
+        }else if(casillasDestapadas == NUM_CASILLAS_SIN_BOMBA){
             
             //el parametro true indica que se finaliza el juego con victoria
             Buscaminas.finalizarPartidaVictoria();
         }
+        
+        
     }
     
     public void destaparTodasLasCasillas(){
@@ -198,6 +201,7 @@ public class Tablero extends JPanel {
                 }
             }
         }
+        casillasDestapadas = 0;
     }
     
     public Casilla[][] getCasillas(){
@@ -211,5 +215,37 @@ public class Tablero extends JPanel {
     //Método que incrementa el numero
     public void incrementarCasillasDestapadas(){
         if(casillasDestapadas < NUM_CASILLAS_SIN_BOMBA) casillasDestapadas++;
+    }
+    
+    public void setNumCasillasDestapadas(int num){
+        casillasDestapadas = num;
+    }
+    
+    public void reconstruirPartidaDesdeArchivoGuardado(ArchivoDeGuardado archivoGuardado){
+        for(int i = 0; i< NUM_FILAS; i++){
+                for(int j = 0; j < NUM_COLUMNAS; j++){
+                boolean tieneBomba = archivoGuardado.getCasillaIsBomba(i,j);
+                boolean isTapada = archivoGuardado.getCasillaIsTapada(i, j);
+                int numBombasAlrededor = archivoGuardado.getNumBombasAlrededor(i,j);
+                int filaCasilla = archivoGuardado.getFilaCasilla(i,j);
+                int columnaCasilla = archivoGuardado.getColumnaCasilla(i,j);
+                
+                casillas[i][j].setTieneBomba(tieneBomba);
+                casillas[i][j].setTapado(isTapada);
+                casillas[i][j].setNumBombasAlrededor(numBombasAlrededor);
+                casillas[i][j].setFila(filaCasilla);
+                casillas[i][j].setColumna(columnaCasilla);
+                
+                //Actualizar iconos
+                if(casillas[i][j].isTapado()){
+                    //la imagen por defecto es la que se muestra cuando una casilla
+                    //esta tapada
+                    casillas[i][j].setImagenPorDefecto();
+                    
+                }else if(!casillas[i][j].isTapado()){
+                    casillas[i][j].destapar();
+                }               
+            }
+        }
     }
 }
