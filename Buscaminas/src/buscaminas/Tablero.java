@@ -172,13 +172,6 @@ public class Tablero extends JPanel {
             j++;
         }
         
-        //Si la posicion sí esta dentro de array de posiciones con bomba
-        //se devuelve true sino false
-//        for (int j = 0; j < posicionBombas.length; j++) {
-//            if (posicion == posicionBombas[j]) {
-//                return true;
-//            }
-//        }
         return posicionEncontrada;
     }
         

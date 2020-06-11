@@ -80,7 +80,6 @@ public class Casilla extends JLabel {
         }
         imagenReescalada = imagenCasilla.getScaledInstance(anchoCasilla,altoCasilla,Image.SCALE_DEFAULT);
         setIcon(new ImageIcon(imagenReescalada)); 
-        //TODO cambiar el metodo incrementar casillas a static
         Tablero.incrementarCasillasDestapadas();
     }
     
