@@ -13,7 +13,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
 
-public class Casilla extends JLabel implements Serializable {
+public class Casilla extends JLabel {
     //ATRIBUTOS
     //VARIABLES
     private boolean tieneBomba;
@@ -37,13 +37,12 @@ public class Casilla extends JLabel implements Serializable {
 
         @Override
         public void mouseReleased(MouseEvent e) {
-            Casilla casillaPulsada = (Casilla) e.getSource();
-            int columna = casillaPulsada.getColumna();
-            int fila = casillaPulsada.getFila();
-            Tablero tablero = Buscaminas.getTablero();
+
+            //Se evalua la condición de victoria sobre la propia casilla
+            //clickada
+            Tablero.evaluarCondicionVictoria(fila,columna);
             
-            tablero.evaluarCondicionVictoria(fila,columna);
-            tablero.getCasillas()[fila][columna].destapar();
+            destapar();
         }
 
         @Override
@@ -68,6 +67,7 @@ public class Casilla extends JLabel implements Serializable {
     public void destapar(){
         this.tapado = false;
         Image imagenCasilla;
+        Image imagenReescalada;
         int anchoCasilla = this.getWidth();
         int altoCasilla = this.getHeight();
         
@@ -78,9 +78,10 @@ public class Casilla extends JLabel implements Serializable {
         }else{
             imagenCasilla = new ImageIcon("IMAGENES/" + numBombasAlrededor + ".jpg").getImage();            
         }
-        Image imagenReescalada = imagenCasilla.getScaledInstance(anchoCasilla,altoCasilla,Image.SCALE_DEFAULT);
-        setIcon(new ImageIcon(imagenReescalada));  
-        Buscaminas.getTablero().incrementarCasillasDestapadas();
+        imagenReescalada = imagenCasilla.getScaledInstance(anchoCasilla,altoCasilla,Image.SCALE_DEFAULT);
+        setIcon(new ImageIcon(imagenReescalada)); 
+        //TODO cambiar el metodo incrementar casillas a static
+        Tablero.incrementarCasillasDestapadas();
     }
     
     public void tapar(){

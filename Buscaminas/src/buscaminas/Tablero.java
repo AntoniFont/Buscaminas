@@ -2,10 +2,7 @@ package buscaminas;
 
 import ArchivoDeGuardadoIO.ArchivoDeGuardado;
 import java.awt.GridLayout;
-import java.io.IOException;
 import java.util.*;
-import javax.sound.sampled.LineUnavailableException;
-import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.JPanel;
 import utils.ArrayUtils;
 
@@ -24,8 +21,9 @@ public class Tablero extends JPanel {
     private static int casillasDestapadas = 0;
     
     public Tablero(){
-        //Generamos las posiciones de las bombas
+        //Generamos las posiciones de las bombas (de 0 a 80)
         posicionBombas = generarPosicionBombas();
+        
         //Iteramos por todas las posiciones y generamos una casilla con bomba o sin bomba segun corresponde
         for(int posActual = 0; posActual < NUM_FILAS * NUM_COLUMNAS; posActual++) {
             int filaActual = convertirPosicionAFila(posActual);
@@ -38,6 +36,7 @@ public class Tablero extends JPanel {
                 casillas[filaActual][columnaActual] = new Casilla(filaActual,columnaActual,false);
             }
         }
+        
         //Se cuentan las bombas de alrededor y añadimos ese numero a la casilla
         for(int i = 0; i<NUM_FILAS;i++){
             for(int j = 0;j<NUM_COLUMNAS;j++){
@@ -49,7 +48,7 @@ public class Tablero extends JPanel {
         }
         initComponents() ;
     }
-    
+
     private void setIconosPorDefecto(){
         for(int i = 0;i<NUM_FILAS;i++){
             for(int j= 0;j<NUM_COLUMNAS;j++){
@@ -117,15 +116,19 @@ public class Tablero extends JPanel {
         return casillasAlrededor;
     }
     
+    //Método que devuelve si una casilla(mediante sus coordenadas fila-columna)
+    //puede existir o si en cambio estaría fuera de las medidas del tablero
     private boolean existeEstaPosEnElTablero(int posFila, int posCol){
         return (posFila >= 0 && posFila < NUM_FILAS) &&
                 (posCol >= 0 && posCol < NUM_COLUMNAS);
     }
     
+    //A partir de una posicion (de 0 a 80) devuelve la fila en la que se encuentra
     public int convertirPosicionAFila(int posicion) {
         return (int) (posicion / NUM_FILAS);
     }
 
+    //A partir de una posicion (de 0 a 80) devuelve la columna en la que se encuentra
     public int convertirPosicionAColumna(int posicion) {
         return (posicion % NUM_COLUMNAS);
     }
@@ -153,18 +156,35 @@ public class Tablero extends JPanel {
         return posBomb;
     }
 
+    //TODO cambiar este esquema a una búsqueda con while
+    //Método que comprueba si se ha generado una bomba en una posición determinada
+    //del tablero (de 0 a 80)
     private boolean seHaGeneradoBombaEnLaPos(int posicion) {
-        for (int j = 0; j < posicionBombas.length; j++) {
+        boolean posicionEncontrada = false;
+        int j = 0;
+        
+        //Busqueda si la posicion de la casilla pasada como parametro, esta
+        //dentro del array de posiciones con bomba
+        while(j < posicionBombas.length && !posicionEncontrada){
             if (posicion == posicionBombas[j]) {
-                return true;
+                posicionEncontrada = true;
             }
+            j++;
         }
-        return false;
+        
+        //Si la posicion sí esta dentro de array de posiciones con bomba
+        //se devuelve true sino false
+//        for (int j = 0; j < posicionBombas.length; j++) {
+//            if (posicion == posicionBombas[j]) {
+//                return true;
+//            }
+//        }
+        return posicionEncontrada;
     }
         
     //Método que al clickar una casilla, evalua si se ha ganado, perdido, o si
     //por lo contrario, el juego sigue
-    public void evaluarCondicionVictoria(int fila , int columna){
+    public static void evaluarCondicionVictoria(int fila , int columna){
         
         //Si se ha destapado una casilla con bomba, finaliza la partida con derrota
         if(casillas[fila][columna].isBomba()){
@@ -213,7 +233,7 @@ public class Tablero extends JPanel {
     }
     
     //Método que incrementa el numero
-    public void incrementarCasillasDestapadas(){
+    public static void incrementarCasillasDestapadas(){
         if(casillasDestapadas < NUM_CASILLAS_SIN_BOMBA) casillasDestapadas++;
     }
     

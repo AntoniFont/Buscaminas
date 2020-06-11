@@ -52,9 +52,9 @@ public class Buscaminas extends JFrame{
     public static void cargarPartida(String rutaArchivoGuardado) {
         try {
             ArchivoDeGuardadoIn fpi = new ArchivoDeGuardadoIn(rutaArchivoGuardado);
-            ArchivoDeGuardado partida = fpi.getArchivoDeGuardado();
+            ArchivoDeGuardado archivoGuardado = fpi.getArchivoDeGuardado();
             tablero.setNumCasillasDestapadas(0);
-            tablero.reconstruirPartidaDesdeArchivoGuardado(partida);
+            tablero.reconstruirPartidaDesdeArchivoGuardado(archivoGuardado);
         } catch (IOException|ClassNotFoundException ex ) {
             System.out.println("No se ha podido cargar la partida");
         }
